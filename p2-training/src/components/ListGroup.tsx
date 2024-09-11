@@ -1,22 +1,30 @@
+import { useState } from "react";
+
 function ListGroup() {
-  let items = ["New York", "San Francisco", "Tokyo", "London", "Paris"];
-  items = [];
-
-  // Stored the condition in a separate variables or constants
-  //   const message = items.length === 0 ? <p>No item found</p> : null;
-
-  // Stored it inside a function
-  //   const getMessage = () => {
-  //     items.length === 0 ? <p>No item found</p> : null;
-  //   };
+  const items = ["New York", "San Francisco", "Tokyo", "London", "Paris"];
+  let selectedIndex = 0;
+  //Hook
+  const arr = useState(-1);
+  arr[0]; // variable (selectedIndex Variable)
+  arr[1]; // Updater function
 
   return (
     <>
       <h1>List</h1>
       {items.length === 0 && <p>No item found</p>}
       <ul className="list-group">
-        {items.map((item) => (
-          <li key={item}>{item}</li>
+        {items.map((item, index) => (
+          <li
+            className={
+              selectedIndex === index
+                ? "list-group-item active"
+                : "list-group-item"
+            }
+            key={item}
+            onClick={() => (selectedIndex = index)}
+          >
+            {item}
+          </li>
         ))}
       </ul>
     </>
