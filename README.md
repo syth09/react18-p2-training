@@ -134,4 +134,38 @@ export default ListGroup;
   - After that we'd also needed to pass the props to the components that we declared on our `app.tsx`.
 
   #### 2. Passing Functions via Props:
-  - 
+  - First, we need to create a properties inside our Props, so let’s create an `onSelectedItem` properties inside our Props.
+  ```
+  interface ListGroupProps {
+    items: string[];
+    heading: string;
+    onSelectItem: (item: string) => void;
+  }
+  ```
+  - Next, we can pass our Props to the child components in its parent. Now we could write an inline function there just like how we handle a click event or we could write an separate event handler.
+  ```
+  import ListGroup from "./components/ListGroup";
+
+  function App() {
+    const items = ["New York", "San Francisco", "Tokyo", "London", "Paris"];
+
+    return (
+      <div>
+        <ListGroup items={items} heading="Cities" onSelectItem={} />
+      </div>
+    );
+  }
+
+  export default App;
+  ```
+  - In the situation where we want to write an separate event handler here what we need to do:
+    + First, we need to create a function in the parent component. Most of the time, we pass down functions to handle events in child components,so let’s create a simple `onSelectItem` event handler.
+    ```
+    const handleSelectedItem = (item: string) => { console.log(item); };
+    ```
+    + To pass a function via Props reference the name of the variable that stores the function
+    ```
+      <ListGroup items={items} heading="Cities" onSelectItem={handleSelectedItem} />
+    ```
+  - Now when we get back to our application an select something the console in response to it will print out the name of the selected item.
+![image](https://gist.github.com/user-attachments/assets/0aafe50a-f29f-4109-904a-0b0a03faf0cd)
