@@ -435,4 +435,14 @@ const Alert = ({ children, onClose }: AlertProps) => {
 ##### *Lastly, it's importance to know that we can only use the state hooks at the top level of our components.
 
 ### Choosing the State Structure:
-- 
+- When you write a component that holds some state, you’ll have to make choices about how many state variables to use and what the shape of their data should be. While it’s possible to write correct programs even with a suboptimal state structure, there are a few principles that can guide you to make better choices:
+  + Group related state variables inside an object: If you always update two or more state variables at the same time, consider merging them into a single state variable.
+  + Avoid contradictions in state: When the state is structured in a way that several pieces of state may contradict and “disagree” with each other, you leave room for mistakes. Try to avoid this.
+  + Avoid redundant state variables: If you can calculate some information from the component’s props or its existing state variables during rendering, you should not put that information into that component’s state.
+  + Avoid duplication in state: When the same data is duplicated between multiple state variables, or within nested objects, it is difficult to keep them in sync. Reduce duplication when you can.
+  + Avoid deeply nested state structures: Deeply hierarchical state is not very convenient to update. When possible, prefer to structure state in a flat way.
+
+### Keeping Components Pure:
+- There is a fundamental concept in React call Purity.
+- In computer science, a pure function is a function that given the same input its always return the same result, but if we got difference result at difference time we say that function is impure.
+- React is design around this concept, it expect every component we created to be a pure function. And this is for performance reason, so if an input of a component haven't changed React can skip re-rendering that components.
