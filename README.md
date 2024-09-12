@@ -23,6 +23,7 @@
 ### Creating a React Components:
 - To create a React components we simply clicked on the src folder and create a new file with the format like shown `ComponentsName.tsx`
 - Name the function by the PascalCasing.
+
 # React day 2
 ## What I've learned for today sessions:
 ### 1. How React works: 
@@ -115,13 +116,14 @@ export default ListGroup;
 ```
 
 # React day 4
-## What I've learned for today sessions
+# What I've learned for today sessions
 ### Source code using as an example in this lessions: https://github.com/syth09/react18-p2-training
 ### Managing State:
 - With React, you won’t modify the UI from code directly. For example, you won’t write commands like `disable the button`, `enable the button`, `show the success message`, etc. Instead, you will describe the UI you want to see for the different visual states of your component (`initial state`, `typing state`, `success state`), and then trigger the state changes in response to user input.
 - Each components will have it own state
 
 ### Passing Props to a Component:
+- Props is a React feature that allows components to receive and pass data, similar to how you’d pass an argument to a function. 
 - React components use props to communicate with each other. Every parent component can pass some information to its child components by giving them props. 
 - To make our components re-usable we use Props. Props or Properties are the input to our components.
 
@@ -169,3 +171,154 @@ export default ListGroup;
     ```
   - Now when we get back to our application an select something the console in response to it will print out the name of the selected item.
 ![image](https://gist.github.com/user-attachments/assets/0aafe50a-f29f-4109-904a-0b0a03faf0cd)
+
+### State vs Props:
+  #### 1. State:
+  - Internal data managed by a components that can change overtime.
+  - State is similar to local variables.
+  - State is mutable (We want to tell React that this component has data that could changed overtime)
+  #### 2. Props:
+  - Props is a input or an argument passed to a components.
+  - Props is similar to function args.
+  - We should treat Props as immutable (unchangeable and it's read-only).
+
+  #### *One thing they both have in common is that anytime they change React will re-render our component and update our `DOM` accordingly.
+
+### Passing Children:
+- Children is a prop, and can be passed in to components in different ways. Children can be an object or an array, etc. 
+- Let’s say we have a Alert Component structure like this:
+  ```
+  interface AlertProps {
+    children: string;
+  }
+
+  const Alert = ({ children }: AlertProps) => {
+    return <div className="alert alert-primary">{children}</div>;
+  };
+
+  export default Alert;
+  ```
+  - Also, by using `ReactNode` class that is define in the React module you can pass  `HTML` elements to our `Alert.tsx` components.
+
+### Inspecting Components with React Dev Tools:
+- React Developer Tools is a Chrome DevTools extension for the open-source React JavaScript library. It allows you to inspect the React component hierarchies in the Chrome Developer Tools.
+
+### Exercise 1:
+- Building a Button Component: https://github.com/syth09/ButtonComponents
+- `Button.tsx`:
+```
+interface ButtonProps {
+  children: string;
+  color?: "primary" | "secondary" | "danger";
+  onClick: () => void;
+}
+
+const Button = ({ children, color, onClick }: ButtonProps) => {
+  return (
+    <button type="button" className={"btn btn-" + color} onClick={onClick}>
+      {children}
+    </button>
+  );
+};
+
+export default Button;
+```
+- Implement it into the `App.tsx`:
+```
+import "./App.css";
+import Button from "./components/Button";
+
+function App() {
+  return (
+    <>
+      <Button color="primary" onClick={() => console.log("Clicked")}>
+        My Button
+      </Button>
+    </>
+  );
+}
+
+export default App;
+```
+
+### Exercise 2 - Showing an Alert:
+- Building a Button Component that show an Alert after being clicked: https://github.com/syth09/ButtonComponents
+- Creating the `Alert.tsx` component:
+
+```
+import { ReactNode } from "react";
+
+interface AlertProps {
+  children: ReactNode;
+}
+
+const Alert = ({ children }: AlertProps) => {
+  return (
+    <div className="alert alert-danger alert-dismissible fade show">
+      {children}
+      <button
+        type="button"
+        className="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+  );
+};
+
+export default Alert;
+```
+- Set a useState to apply the `Alert` into `Button` and set it to occured once it was click:
+```
+import { useState } from "react";
+import "./App.css";
+import Alert from "./components/Alert";
+import Button from "./components/Button";
+
+function App() {
+  const [alertVisible, setAlertVisibility] = useState(false);
+
+  return (
+    <>
+      {alertVisible && <Alert>Red Alert</Alert>}
+      <Button color="danger" onClick={() => setAlertVisibility(true)}>
+        My Button
+      </Button>
+    </>
+  );
+}
+
+export default App;
+```
+- Create a new Props for closing the `Alert` when we clicked the close button:
+```
+interface AlertProps {
+  children: ReactNode;
+  onClose: () => void;
+}
+```
+```
+const Alert = ({ children, onClose }: AlertProps) => {
+  return (
+    <div className="alert alert-danger alert-dismissible fade show">
+      {children}
+      <button
+        type="button"
+        className="btn-close"
+        onClick={onClose}
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+  );
+};
+```
+- Final step is to apply the changes to the `App.tsx` components:
+```
+<>
+  {alertVisible && (<Alert onClose={() => setAlertVisibility(false)}>Red Alert</Alert>)}
+  <Button color="danger" onClick={() => setAlertVisibility(true)}>
+    Red Alert
+  </Button>
+</>
+```
