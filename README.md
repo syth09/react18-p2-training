@@ -322,3 +322,117 @@ const Alert = ({ children, onClose }: AlertProps) => {
   </Button>
 </>
 ```
+
+# React day 5:
+# What I've learned for today sessions:
+### Styling Components:
+  #### 1. Vanilla CSS:
+  - Styling our components by using the Vanilla CSS methods, which is like styling any other `HTML`, `CSS` code we create a component and it CSS file accordingly and put them inside the same folder then we code them from scratch.
+  - First, we create a new folder for our style and component. Then we move our newly create CSS file and our component into the same folder that we've created. next to reduce the redundant import in our `App.tsx` we simply create a `index.tsx` in our folder and use the `index.tsx` to reference the `ListGroup.tsx` components
+  
+    ![image](https://gist.github.com/user-attachments/assets/418742e1-97d3-49bc-a92f-9e8f2abd0528)
+  - Example code for CSS:
+  ```
+  .list-group {
+    list-style: none;
+    padding: 0;
+  }
+  ```
+  - `index.tsx` reference `ListGroup.tsx`
+  ```
+  import ListGroup from "./ListGroup";
+
+  export default ListGroup;
+  ```
+  - Before the reference: ``` import ListGroup from "./components/ListGroup/ListGroup"; ```
+  - After the reference: We can get rid of the file import and simply call the folder then React will automatically looks for the `index.tsx` file.
+  ``` import ListGroup from "./components/ListGroup"; ```
+  #### 2. CSS Modules:
+  - But there is a major problem with Vanilla CSS, the problem is that if somewhere else we had another style sheets where we have a CSS class with the same name we'd going to run into clashes.
+  - And this is what `CSS.Modules` try to solve. In CSS Modules, the CSS file in which all class name are scoped locally.
+  - To do that, first we simply rename our Vanilla CSS file `cssName.css` to `cssName.module.css`
+  - After that we can simply change our import statement from `import from "./ListGroup.css";` to this import statement `import styles from "./ListGroup.module.css";`
+  - Then we can switch up our implementations in the className: `  ul className={styles["list-group"]} `
+ 
+  #### 3. CSS-in-JS:
+  - Another approach for styling our components call CSS-in-JS.
+  - Benifit of CSS-in-JS:
+    + Scoped styles so no name conflict.
+    + All the CSS and JS/TS code in one place and in a single file.
+    + Easier to delete a component.
+    + Easier to style based on props/state.
+  - Libraries that use this implementation:
+    + Styled components.
+    + Emotion.
+    + Polished.
+    + etc.
+  - Example using Styled components:
+  - First, we install the libraries using these command line `npm i styled-components`, `npm i types@styled-components`.
+  - Now with styled-components install we no longer need  to use `className`, instead we create a React components that has all the styled that we want:
+    ```
+    const List = styled.ul`
+      list-style: none;
+      padding: 0;
+    `;
+
+    interface ListItemProps {
+      active: boolean;
+    }
+
+    const ListItem = styled.li<ListItemProps>`
+      padding: 5px 0;
+      background: ${(props) => (props.active ? "blue" : null)};
+    `;
+    ```
+    + Now instead of using the `HTML` element we use the newly created React components. Applying it into the `ul`:
+    ```
+      <List>
+        {items.map((item, index) => (
+          <ListItem
+            active={index === selectedIndex}
+            key={item}
+            onClick={() => {
+              setSelectedIndex(index);
+              onSelectItem(item);
+            }}
+          >
+            {item}
+          </ListItem>
+        ))}
+      </List>
+    ```
+  #### 4. Separation of Concerns:
+  - We should divide a program into distinct sections where each section handles a specific functionality, rather than having everything in one place.
+  - This principal will make our apps:
+    + More modular which help us build and test the module indepently and reuse them in other program.
+    + Easier to understand 
+    + Easier to maintain
+    + Easier to modify
+  #### 5. Inline Styles:
+  - Inline styles is also a way to style our component, but inline style make our code hard to read and maintain (Not recommend).
+  #### 6. Popular UI libraries:
+  - Bootstrap: Easy to use component
+  - Material UI: Open source that implement google design.
+  - Tailwind CSS: Utilities for CSS libraries, instead of giving us a full-fledge component it gives us a really small  utilities class for us to use for styling our components. So with tailwind we basically don't have to write CSS anymore, instead we use the utilities classes.
+  - Daisy UI: Similar to Bootstrap.
+  - Chakra UI: Similar to Material UI which is build on Tailwind CSS.
+  #### 7. Adding Icons:
+  - Using `React Icons` libraries to add icons.
+  - By using the command line `npm i react-icons@4.7.1` to install the library.
+  - `React Icons` is a package of difference icon that come from difference libraries.
+  - To use the icon we simply import the name of the icons and its libraries. After we use it like regular React Component.
+  #### 8. Exercise - Using CSS Modules:
+  ex: https://github.com/syth09/Styling-Button-Using-Module-CSS
+  #### 9. Building a Like Component:
+  ex: https://github.com/syth09/Building-a-Like-Button
+### Understanding the State Hook:
+- React updates state asynchronously meaning not immediately and the new update will be send in as an update pending queue where it will get update in the future: This was done for performance reason, because as part of handling an event we could set multiple state variable and it'd be a burden to re-run and re-render. So for performance reason React takes all of its update patches them and apply them in a later time. After an event handler finished execution and at that point React apply all the update as once and then it'll re-render our components with the updated state.
+- State is actually stored outside of the components.
+- We can only use hooks at the top level of our the components
+=> In conclusion:
+##### *Firstly, for performance reason React updates state in a asynchronous matter. To minimised unnecessary re-render it batched the update apply it all at once and then re-render the components.
+##### *Secondly, when using the state hooks the state variable are created and stored outside of a components in memory. React keeps the state in the memory as long as the component is visible on the screen.
+##### *Lastly, it's importance to know that we can only use the state hooks at the top level of our components.
+
+### Choosing the State Structure:
+- 
