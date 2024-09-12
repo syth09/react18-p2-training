@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 const Like = () => {
-  // Declared a state variable to determin if the heart should be full or empty
+  // Declared a state variable to determine if the heart should be full or empty
   const [status, setStatus] = useState(true);
 
   if (status)
