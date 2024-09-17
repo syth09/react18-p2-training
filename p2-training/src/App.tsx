@@ -50,7 +50,7 @@ function App() {
     setUsers([newUser, ...users]);
     // call the server to save the changes
     axios
-      .post("https://jsonplaceholder.typicode.com/users", newUser)
+      .post("https://jsonplaceholder.typicode.com/users/", newUser)
       .then(({ data: savedUser }) => setUsers([savedUser, ...users]))
       .catch((err) => {
         setError(err.message);
@@ -65,7 +65,7 @@ function App() {
     // call the server to save the changes
     axios
       .patch(
-        "https://jsonplaceholder.typicode.com/users" + user.id,
+        "https://jsonplaceholder.typicode.com/users/" + user.id,
         updatedUser
       )
       .catch((err) => {
